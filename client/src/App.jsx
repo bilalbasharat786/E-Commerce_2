@@ -32,8 +32,7 @@ export default function App() {
   });
 
 
-  const {data:categories, error, loading} = useFetch('http://localhost:7000/categories');
-  // const { data: categories, error, loading } = useFetch('http://localhost:7000/categories');
+  const { data: categories, error, loading } = useFetch('http://localhost:7000/categories');
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -43,26 +42,24 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <CartContext.Provider value={{ cart, setCart }}>
-        <CartProvider>
+      <CartProvider>
         <BrowserRouter>
-          <Topbar/>
-          <Navbar categories={categories}/>
+          <Topbar />
+          <Navbar categories={categories} />
           <Routes>
             <Route path="/" element={<Home categories={categories} />} />
             <Route path="/about" element={<About />} />
-            <Route path="/cart" element={<Cart />} />
+            <Route path="/cart" element={<Protected><Cart /></Protected>} />
             <Route path="/products/:slug" element={<DetailPage />} />
-            <Route path="/contact" element={<Contact/>} />
-            <Route path="/signup" element={<SignupForm/>} />
-            <Route path="/signin" element={<SignInForm/>} />
-            <Route path="/dashboard" element={<Protected><Dashboard/></Protected>} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/signup" element={<SignupForm />} />
+            <Route path="/signin" element={<SignInForm />} />
+            <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
-        </CartProvider>
-        <Footer/>
-      </CartContext.Provider>
+      </CartProvider>
+      <Footer />
     </AuthProvider>
   );
 }
